@@ -3,47 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
     <title>Leah Classifier</title>
     <style>
         /* styles.css */
 
         body {
-            background-color: #e9ecef;
+            background-color: #f9f9f9;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            background-image: url("{% static 'classify/images/cat.jpg' %}"); 
+            background-size: cover;
+            background-position: center;
         }
 
         .container {
             text-align: center;
-            background: white;
+            background-color: rgba(179, 173, 173, 0.4);
+            backdrop-filter: blur(5px);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
         }
 
         h1 {
-            color: #007bff;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
+        color: #eb3a2a;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow to the text */
+        text-transform: uppercase; /* Converts the text to uppercase */
+        letter-spacing: 1.2px; /* Adds spacing between the letters */
+        font-weight: bold; /* Makes the font weight bold */
+        }   
         .upload-area {
             margin: 20px 0;
             padding: 30px;
             border: 2px dashed #6c757d;
             border-radius: 15px;
-            background: #f1f3f5;
+            background: #fff6f6;
             cursor: pointer;
             transition: background 0.3s, border-color 0.3s;
         }
 
         .upload-area:hover {
-            background: #e9ecef;
-            border-color: #007bff;
+            background: #ffefef;
+            border-color: #ff6f61;
         }
 
         .upload-label {
@@ -78,7 +89,7 @@
             padding: 12px 24px;
             font-size: 1em;
             color: white;
-            background-color: #007bff;
+            background-color: #ff6f61;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -86,7 +97,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #e65550;
             transform: scale(1.05);
         }
 
@@ -100,6 +111,21 @@
 
         .result.show {
             opacity: 1;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .footer a {
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -120,10 +146,11 @@
         <div class="result" id="result">
             <!-- Classification result will appear here -->
         </div>
+        <div class="footer">
+            <p>Powered by Salam Cv <a href="#">Portfolio</a></p>
+        </div>
     </div>
     <script>
-        // script.js
-
         document.addEventListener('DOMContentLoaded', function () {
             const uploadForm = document.getElementById('upload-form');
             const imageUpload = document.getElementById('image-upload');

@@ -28,8 +28,6 @@ pipenv==2023.11.15
 platformdirs==4.0.0
 plotly==5.22.0
 pytz==2024.1
-pywin32==306
-pywinpty==2.0.12
 PyYAML==6.0.1
 pyzmq==25.1.1
 scikit-learn==1.4.2

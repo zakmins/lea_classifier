@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leah Classifier</title>
+    <style>
+        /* styles.css */
+
+        body {
+            background-color: #e9ecef;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #007bff;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            margin: 20px 0;
+            padding: 30px;
+            border: 2px dashed #6c757d;
+            border-radius: 15px;
+            background: #f1f3f5;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+        }
+
+        .upload-label {
+            display: block;
+            color: #495057;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        #image-upload {
+            display: none;
+        }
+
+        .image-preview {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .image-preview img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #28a745;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .result.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Leah Classifier</h1>
+        <form id="upload-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-area">
+                <label for="image-upload" class="upload-label">Click to Upload an Image of a Cat</label>
+                <input type="file" id="image-upload" name="image" accept="image/*" required>
+            </div>
+            <div class="image-preview" id="image-preview">
+                <img id="preview-img" src="#" alt="Your Image" />
+            </div>
+            <button type="submit">Classify</button>
+        </form>
+        <div class="result" id="result">
+            <!-- Classification result will appear here -->
+        </div>
+    </div>
+    <script>
+        // script.js
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const uploadForm = document.getElementById('upload-form');
+            const imageUpload = document.getElementById('image-upload');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            const resultDiv = document.getElementById('result');
+
+            imageUpload.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImg.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            uploadForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(uploadForm);
+
+                fetch('', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.predicted_class == 1){
+                        resultDiv.textContent = `This is not Leah`;
+                        resultDiv.style.color = "red";
+                    } else {
+                        resultDiv.textContent = `This is indeed Leah!`;
+                        resultDiv.style.color = "green";
+                    }
+                    resultDiv.classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
